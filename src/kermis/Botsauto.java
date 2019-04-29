@@ -1,13 +1,10 @@
 package kermis;
 
 class Botsauto extends Attractie {
-	Botsauto(){
+	Botsauto() {
 		this.naam = "Botsauto's";
-	}
-	
-	@Override
-	void draaien() {
-		System.out.println("De atrractie " + this.naam + " draait.");
+		this.prijs = 2.50;
+
 	}
 
 }

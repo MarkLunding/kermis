@@ -1,13 +1,9 @@
 package kermis;
 
 class Spiegelpaleis extends Attractie {
-	Spiegelpaleis(){
+	Spiegelpaleis() {
 		this.naam = "Spiegelpaleis";
-	}
-	
-	@Override
-	void draaien() {
-		System.out.println("Het " + this.naam + " draait.");
+		this.prijs = 2.75;
 	}
 
 }

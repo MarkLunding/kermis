@@ -1,13 +1,9 @@
 package kermis;
 
 class Spookhuis extends Attractie {
-	Spookhuis(){
+	Spookhuis() {
 		this.naam = "Spookhuis";
-	}
-	
-	@Override
-	void draaien() {
-		System.out.println("Het " + this.naam + " draait.");
+		this.prijs = 3.20;
 	}
 
 }

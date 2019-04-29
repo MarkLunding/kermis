@@ -1,13 +1,9 @@
 package kermis;
 
 class Hawaii extends Attractie {
-	Hawaii(){
+	Hawaii() {
 		this.naam = "Hawaii";
-	}
-	
-	@Override
-	void draaien() {
-		System.out.println("De attractie " + this.naam + " draait.");
+		this.prijs = 2.90;
 	}
 
 }

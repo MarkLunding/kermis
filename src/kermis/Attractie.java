@@ -2,7 +2,15 @@ package kermis;
 
 abstract class Attractie{
 	String naam;
-	Double prijs;
-	Double oppervlakte;
-	abstract void draaien();
+	double prijs;
+	double oppervlakte;
+	double omzet;
+	int kaartjes = 0;
+	
+	double draaien() {
+		this.omzet += this.prijs;
+		this.kaartjes++;
+		System.out.println("De atrractie " + this.naam + " draait.");
+		return this.prijs;
+	}
 }

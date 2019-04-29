@@ -8,12 +8,15 @@ class Kermis {
 	Kassa kassa = new Kassa();
 
 	Kermis() {
+		System.out.println("Welkom op de kermis.");
+		System.out.println();
 		this.attracties.add(new Botsauto());
 		this.attracties.add(new Spin());
 		this.attracties.add(new Spiegelpaleis());
 		this.attracties.add(new Spookhuis());
 		this.attracties.add(new Hawaii());
 		this.attracties.add(new Ladderklimmen());
+		System.out.println();
 		initKermis();
 
 	}
@@ -55,7 +58,7 @@ class Kermis {
 	}
 
 	void initKermis() {
-		System.out.println("Welkom op de kermis. In welke attractie wilt u?");
+		System.out.println("In welke attractie wilt u?");
 		System.out.println();
 		System.out.print("1: Botsauto's | 2: Spin | 3: Spiegelpaleis | 4: Spookhuis | 5: Hawaii | 6: Ladderklimmen");
 		System.out.println();

@@ -36,7 +36,7 @@ class Hawaii extends RisicoRijkeAttracties {
 	@Override
 	boolean isOnderhoudNodig() {
 		boolean onderhoudNodig = false;
-		if (this.onderhoudsTeller == 0) {
+		if (this.onderhoudsTeller < 1) { //kleiner dan 1, omdat je ook onder 0 komt komen als je niet meteen onderhoud kiest.
 			onderhoudNodig = true;
 		}
 		return onderhoudNodig;

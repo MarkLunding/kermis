@@ -22,9 +22,11 @@ class Kermis {
 	}
 
 	void bezoekKermis() {
-		boolean bezoek = true;
-
-		while (bezoek) {
+		boolean bezoekKermis = true;
+		belastingInspecteur inspecteur = new belastingInspecteur();
+		boolean[] inspectieMoment = inspecteur.bepaalBezoekMoment();
+		int inspectieTeller = 0;
+		while (bezoekKermis) {
 			int bezoekAttractie;
 			try {
 				bezoekAttractie = this.startKermis();
@@ -32,10 +34,9 @@ class Kermis {
 				System.out.println("De ingevoerde waarde is ongeldig.");
 				continue;
 			}
-			System.out.println(bezoekAttractie);
 			switch (bezoekAttractie) {
 			case 0:
-				bezoek = false;
+				bezoekKermis = false;
 				break;
 			case 1:
 			case 2:
@@ -43,14 +44,41 @@ class Kermis {
 			case 4:
 			case 5:
 			case 6:
-				kassa.omzet += attracties.get(bezoekAttractie - 1).draaien();
-				kassa.verkochteKaartjes++;
+
+				kassa.setOmzet(kassa.getOmzet() + attracties.get(bezoekAttractie - 1).draaien());
+				kassa.setVerkochteKaartjes(kassa.getVerkochteKaartjes() + 1);
+				if (attracties.get(bezoekAttractie - 1) instanceof GokAttractie) {
+					GokAttractie attractie = (GokAttractie) attracties.get(bezoekAttractie - 1);
+					attractie.reserveerBelasting();
+				}
+
+				if (inspectieMoment[inspectieTeller]) {
+					for(Attractie attractie : attracties) {
+						if (attractie instanceof GokAttractie) {
+							GokAttractie gok = (GokAttractie) attracties.get(bezoekAttractie - 1);
+							System.out.println("De inspecteur heeft bij " + attractie.naam + " kansspelbelasting geint.");
+							kassa.setTotaalAfgedragenBelasting(kassa.getTotaalAfgedragenBelasting() + gok.kansSpelBelastingBetalen());
+							//ik verhoog nu dus het aantal bezoeken per attractie en niet per ronde
+							//de inspecteur is bij meerdere attracties op bezoek geweest als er meer dan 1 gok attractie is.
+							kassa.setAantalBelastingBezoeken(kassa.getAantalBelastingBezoeken()+1);
+						}
+					}
+					
+
+				}
+				inspectieTeller++;
+				if (inspectieTeller == 15) {
+					inspectieMoment = inspecteur.bepaalBezoekMoment();
+					inspectieTeller = 0;
+				}
 				break;
 			case 20: // 20 is de waarde van k
-				System.out.println("Het totaal aantalverkochte kaartjes is: " + kassa.verkochteKaartjes);
+				System.out.println("Het totaal aantalverkochte kaartjes is: " + kassa.getVerkochteKaartjes());
 				break;
 			case 24: // 24 is de waarde van o
-				System.out.println("De totale kermis omzet is: " + kassa.omzet);
+				System.out.println("De totale kermis omzet is: " + kassa.getOmzet());
+				System.out.println("Totaal betaalde kansspelbelasting: " + kassa.getTotaalAfgedragenBelasting());
+				System.out.println("Totaal aantal bezoeken van inspecteur: " + kassa.getAantalBelastingBezoeken());
 				break;
 
 			}

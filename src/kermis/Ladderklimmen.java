@@ -1,36 +1,44 @@
 package kermis;
 
 class Ladderklimmen extends Attractie implements GokAttractie{
-	double kansSpelBelasting;
-	double belastingSindsLaatsteAfdracht;
-	
+	private double kansSpelBelasting;
+	private double belastingSindsLaatsteAfdracht;
+	private double belastingBedrag ;
 	
 	Ladderklimmen() {
 		this.naam = "Ladderklimmen";
 		this.prijs = 5.00;
+		this.belastingBedrag = this.prijs * belastingtarief;
 	}
-
+	
 	@Override
-	double draaien() {
-		this.omzet += this.prijs;
-		this.belastingSindsLaatsteAfdracht+= this.prijs * 0.3;
-		kansSpelBelastingBetalen();
-		this.kaartjes++;
-		System.out.println("De atrractie " + this.naam + " draait.");
-		return this.prijs;
+	public void reserveerBelasting() {
+		this.omzet-= this.belastingBedrag;
+		this.setBelastingSindsLaatsteAfdracht(this.getBelastingSindsLaatsteAfdracht() + this.belastingBedrag);
 	}
 		
 	@Override
-	public void kansSpelBelastingBetalen() {
-		// TODO Auto-generated method stub
-		//pas nodig in doelstelling 4
-//		this.resetOmzetVoorAfdracht();
+	public double kansSpelBelastingBetalen() {
+		double teBelaten = this.getBelastingSindsLaatsteAfdracht();
+		this.setBelastingSindsLaatsteAfdracht(0.0);
+		return teBelaten;
 	}
 
-	@Override
-	public void resetOmzetVoorAfdracht() {
-		this.belastingSindsLaatsteAfdracht = 0;
-		
+
+	public double getKansSpelBelasting() {
+		return kansSpelBelasting;
+	}
+
+	public void setKansSpelBelasting(double kansSpelBelasting) {
+		this.kansSpelBelasting = kansSpelBelasting;
+	}
+
+	public double getBelastingSindsLaatsteAfdracht() {
+		return belastingSindsLaatsteAfdracht;
+	}
+
+	public void setBelastingSindsLaatsteAfdracht(double belastingSindsLaatsteAfdracht) {
+		this.belastingSindsLaatsteAfdracht = belastingSindsLaatsteAfdracht;
 	}
 
 }

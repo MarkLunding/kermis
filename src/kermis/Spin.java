@@ -1,8 +1,7 @@
 package kermis;
 
 class Spin extends RisicoRijkeAttracties implements GokAttractie {
-	int onderhoudsTeller = 5;
-	private double kansSpelBelasting;
+	private int onderhoudsTeller = 5;
 	private double belastingSindsLaatsteAfdracht;
 	private double belastingBedrag;
 
@@ -20,13 +19,14 @@ class Spin extends RisicoRijkeAttracties implements GokAttractie {
 	}
 
 	@Override
-	double draaien() {
+	double draaien() throws Exception{
+		if (--this.onderhoudsTeller < 1) {
+			throw new Exception(this.naam);
+		}
 		this.omzet += this.prijs;
 		this.kaartjes++;
 		System.out.println("De atrractie " + this.naam + " draait.");
-		if (--this.onderhoudsTeller < 1) {
-			onderhoudsKeuring();
-		}
+		
 		return this.prijs;
 	}
 
@@ -49,20 +49,27 @@ class Spin extends RisicoRijkeAttracties implements GokAttractie {
 		return teBelaten;
 	}
 
-	public double getKansSpelBelasting() {
-		return kansSpelBelasting;
-	}
-
-	public void setKansSpelBelasting(double kansSpelBelasting) {
-		this.kansSpelBelasting = kansSpelBelasting;
-	}
-
 	public double getBelastingSindsLaatsteAfdracht() {
 		return belastingSindsLaatsteAfdracht;
 	}
 
 	public void setBelastingSindsLaatsteAfdracht(double belastingSindsLaatsteAfdracht) {
 		this.belastingSindsLaatsteAfdracht = belastingSindsLaatsteAfdracht;
+	}
+
+	@Override
+	boolean isOnderhoudNodig() {
+		boolean onderhoudNodig = false;
+		if (this.onderhoudsTeller == 0) {
+			onderhoudNodig = true;
+		}
+		return onderhoudNodig;
+	}
+
+	@Override
+	void onderhoudsKeuring() {
+		System.out.println("De onderhoudskeuring van atrractie " + this.naam + " is uitgevoerd.");
+		this.onderhoudReset();
 	}
 
 }

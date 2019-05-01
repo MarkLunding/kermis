@@ -1,7 +1,6 @@
 package kermis;
 
 class Ladderklimmen extends Attractie implements GokAttractie{
-	private double kansSpelBelasting;
 	private double belastingSindsLaatsteAfdracht;
 	private double belastingBedrag ;
 	
@@ -22,15 +21,6 @@ class Ladderklimmen extends Attractie implements GokAttractie{
 		double teBelaten = this.getBelastingSindsLaatsteAfdracht();
 		this.setBelastingSindsLaatsteAfdracht(0.0);
 		return teBelaten;
-	}
-
-
-	public double getKansSpelBelasting() {
-		return kansSpelBelasting;
-	}
-
-	public void setKansSpelBelasting(double kansSpelBelasting) {
-		this.kansSpelBelasting = kansSpelBelasting;
 	}
 
 	public double getBelastingSindsLaatsteAfdracht() {

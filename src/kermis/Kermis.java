@@ -44,28 +44,31 @@ class Kermis {
 			case 4:
 			case 5:
 			case 6:
-
-				kassa.setOmzet(kassa.getOmzet() + attracties.get(bezoekAttractie - 1).draaien());
-				kassa.setVerkochteKaartjes(kassa.getVerkochteKaartjes() + 1);
-				if (attracties.get(bezoekAttractie - 1) instanceof GokAttractie) {
-					GokAttractie attractie = (GokAttractie) attracties.get(bezoekAttractie - 1);
-					attractie.reserveerBelasting();
+				// draai de attractie en controleer of onderhoud exceptie optreedt
+				try {
+					kassa.setOmzet(kassa.getOmzet() + attracties.get(bezoekAttractie - 1).draaien());
+				} catch (Exception e) {
+					System.out.println(
+							"Deze attractie heeft onderhoud nodig. Dit moet de bediener activeren met de optie m");
+					continue;
 				}
+				this.verhoogKaartjes();
+				this.reserveerKansspelBelasting(bezoekAttractie);
 
+				// kansspelbelasting betalen indien het moment er is (inspectitemoment)
+				// maar natuurlijk alleen voor de attracties die als gokken bekend zijn.
 				if (inspectieMoment[inspectieTeller]) {
-					for(Attractie attractie : attracties) {
+					int welkeAttractie = 0;
+					for (Attractie attractie : attracties) {
 						if (attractie instanceof GokAttractie) {
-							GokAttractie gok = (GokAttractie) attracties.get(bezoekAttractie - 1);
-							System.out.println("De inspecteur heeft bij " + attractie.naam + " kansspelbelasting geint.");
-							kassa.setTotaalAfgedragenBelasting(kassa.getTotaalAfgedragenBelasting() + gok.kansSpelBelastingBetalen());
-							//ik verhoog nu dus het aantal bezoeken per attractie en niet per ronde
-							//de inspecteur is bij meerdere attracties op bezoek geweest als er meer dan 1 gok attractie is.
-							kassa.setAantalBelastingBezoeken(kassa.getAantalBelastingBezoeken()+1);
+							this.belastingInnen(welkeAttractie, attractie.naam);
 						}
+						welkeAttractie++;
 					}
-					
+					kassa.setAantalBelastingBezoeken(kassa.getAantalBelastingBezoeken() + 1);
 
 				}
+
 				inspectieTeller++;
 				if (inspectieTeller == 15) {
 					inspectieMoment = inspecteur.bepaalBezoekMoment();
@@ -73,21 +76,13 @@ class Kermis {
 				}
 				break;
 			case 20: // 20 is de waarde van k
-				System.out.println("Het totaal aantalverkochte kaartjes is: " + kassa.getVerkochteKaartjes());
-				System.out.println("===============");
-				for (Attractie attractie : attracties) {
-					System.out.println("Verkochte kaartje van: " +attractie.naam + " is:" + attractie.kaartjes);
-				}
+				this.printKaartjeInfo();
+				break;
+			case 22: // 22 is de waarde van m
+				this.onderhoud();
 				break;
 			case 24: // 24 is de waarde van o
-				System.out.println("De totale kermis omzet is: " + kassa.getOmzet());
-				System.out.println("===============");
-				for (Attractie attractie : attracties) {
-					System.out.println("Omzet van: " +attractie.naam + " is:" + attractie.omzet);
-				}
-				System.out.println();
-				System.out.println("Totaal betaalde kansspelbelasting: " + kassa.getTotaalAfgedragenBelasting());
-				System.out.println("Totaal aantal bezoeken van inspecteur: " + kassa.getAantalBelastingBezoeken());
+				this.printOmzetInfo();
 				break;
 
 			}
@@ -99,21 +94,70 @@ class Kermis {
 		System.out.println();
 		System.out.print("1: Botsauto's | 2: Spin | 3: Spiegelpaleis | 4: Spookhuis | 5: Hawaii | 6: Ladderklimmen");
 		System.out.println();
-		System.out.println("0: Stoppen | o: omzet | k: kaartjes");
+		System.out.println("0: Stoppen | o: omzet | k: kaartjes | m: monteur");
 	}
 
 	int startKermis() throws Exception {
-
 		Scanner sc = new Scanner(System.in);
 		String attractieInvoer = sc.nextLine();
 		int eersteLetter = Character.getNumericValue(attractieInvoer.charAt(0));
 
 		if (eersteLetter > 6) {
 			char letterInvoer = attractieInvoer.charAt(0);
-			if (letterInvoer != 'o' && letterInvoer != 'k') {
+			if (letterInvoer != 'o' && letterInvoer != 'k' && letterInvoer != 'm') {
 				throw new Exception();
 			}
 		}
 		return eersteLetter;
 	}
+
+	void verhoogKaartjes() {
+		kassa.setVerkochteKaartjes(kassa.getVerkochteKaartjes() + 1);
+
+	}
+
+	void reserveerKansspelBelasting(int attractieNr) {
+		if (attracties.get(attractieNr - 1) instanceof GokAttractie) {
+			GokAttractie attractie = (GokAttractie) attracties.get(attractieNr - 1);
+			attractie.reserveerBelasting();
+		}
+	}
+
+	void belastingInnen(int attractieNr, String attractienaam) {
+		GokAttractie gok = (GokAttractie) attracties.get(attractieNr);
+		System.out.println("De inspecteur heeft bij " + attractienaam + " kansspelbelasting geint.");
+		kassa.setTotaalAfgedragenBelasting(kassa.getTotaalAfgedragenBelasting() + gok.kansSpelBelastingBetalen());
+	}
+
+	void printKaartjeInfo() {
+		System.out.println("Het totaal aantalverkochte kaartjes is: " + kassa.getVerkochteKaartjes());
+		System.out.println("===============");
+		for (Attractie attractie : attracties) {
+			System.out.println("Verkochte kaartje van: " + attractie.naam + " is:" + attractie.kaartjes);
+		}
+	}
+
+	void onderhoud() {
+
+		for (Attractie attractie : attracties) {
+			if (attractie instanceof RisicoRijkeAttracties) {
+
+				if (((RisicoRijkeAttracties) attractie).isOnderhoudNodig()) {
+					((RisicoRijkeAttracties) attractie).onderhoudsKeuring();
+				}
+			}
+		}
+	}
+
+	void printOmzetInfo() {
+		System.out.println("De totale kermis omzet is: " + kassa.getOmzet());
+		System.out.println("===============");
+		for (Attractie attractie : attracties) {
+			System.out.println("Omzet van: " + attractie.naam + " is:" + attractie.omzet);
+		}
+		System.out.println();
+		System.out.println("Totaal betaalde kansspelbelasting: " + kassa.getTotaalAfgedragenBelasting());
+		System.out.println("Totaal aantal bezoeken van inspecteur: " + kassa.getAantalBelastingBezoeken());
+	}
+
 }

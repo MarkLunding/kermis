@@ -16,13 +16,14 @@ class Hawaii extends RisicoRijkeAttracties {
 	}
 	
 	@Override
-	double draaien() {
+	double draaien() throws Exception{
+		if (--this.onderhoudsTeller < 1) {
+			throw new Exception(this.naam);
+		}
 		this.omzet += this.prijs;
 		this.kaartjes++;
 		System.out.println("De atrractie " + this.naam + " draait.");
-		if(--this.onderhoudsTeller < 1) {
-			onderhoudsKeuring();
-		}
+		
 		return this.prijs;
 	}
 
@@ -32,5 +33,20 @@ class Hawaii extends RisicoRijkeAttracties {
 		
 	}
 	
+	@Override
+	boolean isOnderhoudNodig() {
+		boolean onderhoudNodig = false;
+		if (this.onderhoudsTeller == 0) {
+			onderhoudNodig = true;
+		}
+		return onderhoudNodig;
+	}
 
+	@Override
+	void onderhoudsKeuring() {
+		System.out.println("De onderhoudskeuring van atrractie " + this.naam + " is uitgevoerd.");
+		this.onderhoudReset();
+	}
+	
+	
 }

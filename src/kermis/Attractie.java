@@ -7,7 +7,7 @@ abstract class Attractie{
 	double omzet;
 	int kaartjes = 0;
 	
-	double draaien() {
+	double draaien() throws Exception {
 		this.omzet += this.prijs;
 		this.kaartjes++;
 		System.out.println("De atrractie " + this.naam + " draait.");

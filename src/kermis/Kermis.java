@@ -74,9 +74,18 @@ class Kermis {
 				break;
 			case 20: // 20 is de waarde van k
 				System.out.println("Het totaal aantalverkochte kaartjes is: " + kassa.getVerkochteKaartjes());
+				System.out.println("===============");
+				for (Attractie attractie : attracties) {
+					System.out.println("Verkochte kaartje van: " +attractie.naam + " is:" + attractie.kaartjes);
+				}
 				break;
 			case 24: // 24 is de waarde van o
 				System.out.println("De totale kermis omzet is: " + kassa.getOmzet());
+				System.out.println("===============");
+				for (Attractie attractie : attracties) {
+					System.out.println("Omzet van: " +attractie.naam + " is:" + attractie.omzet);
+				}
+				System.out.println();
 				System.out.println("Totaal betaalde kansspelbelasting: " + kassa.getTotaalAfgedragenBelasting());
 				System.out.println("Totaal aantal bezoeken van inspecteur: " + kassa.getAantalBelastingBezoeken());
 				break;

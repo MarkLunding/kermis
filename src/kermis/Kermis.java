@@ -144,9 +144,9 @@ class Kermis {
 
 		for (Attractie attractie : attracties) {
 			if (attractie instanceof RisicoRijkeAttracties) {
-
-				if (((RisicoRijkeAttracties) attractie).isOnderhoudNodig()) {
-					((RisicoRijkeAttracties) attractie).onderhoudsKeuring();
+				RisicoRijkeAttracties risicoAttractie = (RisicoRijkeAttracties)attractie;
+				if (risicoAttractie.isOnderhoudNodig()) {
+					risicoAttractie.onderhoudsKeuring();
 				}
 			}
 		}

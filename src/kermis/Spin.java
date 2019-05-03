@@ -1,7 +1,7 @@
 package kermis;
 
 class Spin extends RisicoRijkeAttracties implements GokAttractie {
-	private int onderhoudsTeller = 5;
+	private int onderhoudsTeller = 6;
 	private double belastingSindsLaatsteAfdracht;
 	private double belastingBedrag;
 
@@ -32,7 +32,7 @@ class Spin extends RisicoRijkeAttracties implements GokAttractie {
 
 	@Override
 	void onderhoudReset() {
-		this.onderhoudsTeller = 5;
+		this.onderhoudsTeller = 6;
 
 	}
 

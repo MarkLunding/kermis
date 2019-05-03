@@ -1,7 +1,7 @@
 package kermis;
 
 class Hawaii extends RisicoRijkeAttracties {
-	int onderhoudsTeller = 10;
+	int onderhoudsTeller = 11;
 	
 	Hawaii() {
 		this.naam = "Hawaii";
@@ -29,7 +29,7 @@ class Hawaii extends RisicoRijkeAttracties {
 
 	@Override
 	void onderhoudReset() {
-		this.onderhoudsTeller = 10;
+		this.onderhoudsTeller = 11;
 		
 	}
 	

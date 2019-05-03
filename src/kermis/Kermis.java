@@ -120,7 +120,7 @@ class Kermis {
 	void belastingInnen(int attractieNr, String attractienaam) {
 		GokAttractie gok = (GokAttractie) attracties.get(attractieNr);
 		System.out.println("De inspecteur heeft bij " + attractienaam + " kansspelbelasting geint.");
-		kassa.setTotaalAfgedragenBelasting(kassa.getTotaalAfgedragenBelasting() + gok.kansSpelBelastingBetalen());
+		kassa.setTotaalAfgedragen(kassa.getTotaalAfgedragen() + gok.kansSpelBelastingBetalen());
 	}
 
 	void printKaartjeInfo() {

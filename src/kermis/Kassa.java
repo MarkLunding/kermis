@@ -4,7 +4,7 @@ package kermis;
 	private double omzet;
 	private int verkochteKaartjes = 0;
 	private int aantalBelastingBezoeken = 0;
-	private double totaalAfgedragenBelasting = 0;
+	private double totaalAfgedragen = 0;
 
 	public double getOmzet() {
 		return omzet;
@@ -30,19 +30,19 @@ package kermis;
 		this.aantalBelastingBezoeken = aantalBelastingBezoeken;
 	}
 
-	public double getTotaalAfgedragenBelasting() {
-		return totaalAfgedragenBelasting;
+	public double getTotaalAfgedragen() {
+		return totaalAfgedragen;
 	}
 
-	public void setTotaalAfgedragenBelasting(double totaalAfgedragenBelasting) {
-		this.totaalAfgedragenBelasting = totaalAfgedragenBelasting;
+	public void setTotaalAfgedragen(double totaalAfgedragen) {
+		this.totaalAfgedragen = totaalAfgedragen;
 	}
 	
 	void printKassaOmzetInfo() {
 		System.out.println("De totale kermis omzet is: " + this.getOmzet());
 		System.out.println("===============");
 		System.out.println();
-		System.out.println("Totaal betaalde kansspelbelasting: " + this.getTotaalAfgedragenBelasting());
+		System.out.println("Totaal betaalde kansspelbelasting: " + this.getTotaalAfgedragen());
 		System.out.println("Totaal aantal bezoeken van inspecteur: " + this.getAantalBelastingBezoeken());
 	}
 

@@ -2,22 +2,37 @@ package kermis;
 
 import java.util.Random;
 
-class belastingInspecteur {
-	private int inspectieTeller = 0;
-	
+public class BelastingInspecteur {
 
-	boolean []bepaalBezoekMoment() {
+	private int inspectieTeller = 0;
+	int inspectieMoment = this.bepaalInpectieMoment();
+
+	int bepaalInpectieMoment() {
 		Random random = new Random();
-		int moment = random.nextInt(15);
-		boolean [] bezoekMoment = new boolean[15];
-		for (int i = 0; i < bezoekMoment.length; i++) {
-			if (moment != i) {
-				bezoekMoment[i] = false;
-			} else {
-				bezoekMoment[i] = true;
-			}
-		}
-		return bezoekMoment;
-		
+		int moment = random.nextInt(3);
+		return moment;
+
 	}
+
+	boolean komtDeInspecteur() {
+		boolean ikKom = false;
+		if (inspectieTeller == inspectieMoment) {
+			ikKom = true;
+		} else {
+			ikKom = false;
+		}
+		if (inspectieTeller < 3) {
+			inspectieTeller++;
+		} else {
+			resetBezoekMoment();
+		}
+		return ikKom;
+	}
+
+	int resetBezoekMoment() {
+		inspectieMoment = bepaalInpectieMoment();
+		this.inspectieTeller = 0;
+		return inspectieTeller;
+	}
+
 }

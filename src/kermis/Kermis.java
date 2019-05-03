@@ -6,8 +6,8 @@ import java.util.Scanner;
 class Kermis {
 	ArrayList<Attractie> attracties = new ArrayList<>();
 	Kassa kassa = new Kassa();
-	boolean stopBezoek = false;
-	int inspectieTeller = 0;
+	BelastingInspecteur inspecteur = new BelastingInspecteur();
+	boolean kermisBezoek = true;
 	int welkeAttractie;
 
 	Kermis() {
@@ -20,9 +20,7 @@ class Kermis {
 	}
 
 	void bezoekKermis() {
-		belastingInspecteur inspecteur = new belastingInspecteur();
-		boolean[] inspectieMoment = inspecteur.bepaalBezoekMoment();
-		while (!stopBezoek) {
+		while (kermisBezoek) {
 			try {
 				welkeAttractie = this.watGaanWeDoen();
 			} catch (Exception e) {
@@ -31,7 +29,7 @@ class Kermis {
 			}
 			switch (welkeAttractie) {
 			case 0:
-				stopBezoek = true;
+				kermisBezoek = false;
 				break;
 			case 1:
 			case 2:
@@ -39,7 +37,6 @@ class Kermis {
 			case 4:
 			case 5:
 			case 6:
-				// draai de attractie en controleer of onderhoud exceptie optreedt
 				try {
 					kassa.setOmzet(kassa.getOmzet() + attracties.get(welkeAttractie - 1).draaien());
 				} catch (Exception e) {
@@ -50,10 +47,7 @@ class Kermis {
 				verhoogKaartjes();
 				reserveerKansspelBelasting(welkeAttractie);
 
-				// kansspelbelasting betalen indien het moment er is (inspectitemoment)
-				// maar natuurlijk alleen voor de attracties die als gokken bekend zijn.
-
-				if (inspectieMoment[inspectieTeller]) {
+				if (inspecteur.komtDeInspecteur()) {
 					int welkeAttractie = 0;
 					for (Attractie attractie : attracties) {
 						if (attractie instanceof GokAttractie) {
@@ -65,11 +59,6 @@ class Kermis {
 
 				}
 
-				inspectieTeller++;
-				if (inspectieTeller == 15) {
-					inspectieMoment = inspecteur.bepaalBezoekMoment();
-					inspectieTeller = 0;
-				}
 				break;
 			case 20: // 20 is de waarde van k
 				printKaartjeInfo();
@@ -153,7 +142,5 @@ class Kermis {
 			}
 		}
 	}
-
-
 
 }

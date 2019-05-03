@@ -9,7 +9,7 @@ public class BelastingInspecteur {
 
 	int bepaalInpectieMoment() {
 		Random random = new Random();
-		int moment = random.nextInt(3);
+		int moment = random.nextInt(15);
 		return moment;
 
 	}

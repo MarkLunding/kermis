@@ -31,12 +31,7 @@ class Kermis {
 			case 0:
 				kermisBezoek = false;
 				break;
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
+			case 1: case 2:	case 3:	case 4: case 5: case 6:
 				try {
 					kassa.setOmzet(kassa.getOmzet() + attracties.get(welkeAttractie - 1).draaien());
 				} catch (Exception e) {
@@ -44,21 +39,7 @@ class Kermis {
 							"Deze attractie heeft onderhoud nodig. Dit moet de bediener activeren met de optie m");
 					continue;
 				}
-				verhoogKaartjes();
-				reserveerKansspelBelasting(welkeAttractie);
-
-				if (inspecteur.komtDeInspecteur()) {
-					int welkeAttractie = 0;
-					for (Attractie attractie : attracties) {
-						if (attractie instanceof GokAttractie) {
-							this.belastingInnen(welkeAttractie, attractie.naam);
-						}
-						welkeAttractie++;
-					}
-					kassa.setAantalBelastingBezoeken(kassa.getAantalBelastingBezoeken() + 1);
-
-				}
-
+				attractieBezoekAfhandeling(welkeAttractie);
 				break;
 			case 20: // 20 is de waarde van k
 				printKaartjeInfo();
@@ -105,15 +86,27 @@ class Kermis {
 		return eersteLetter;
 	}
 
-	void verhoogKaartjes() {
+	void attractieBezoekAfhandeling(int attractieNr) {
+		//verkochte kaartjes verwerken
 		kassa.setVerkochteKaartjes(kassa.getVerkochteKaartjes() + 1);
-
-	}
-
-	void reserveerKansspelBelasting(int attractieNr) {
+		
+		//Reserveer kansspelbelasting
 		if (attracties.get(attractieNr - 1) instanceof GokAttractie) {
 			GokAttractie attractie = (GokAttractie) attracties.get(attractieNr - 1);
 			attractie.reserveerBelasting();
+		}
+
+		//is inspectie nodig?
+		if (inspecteur.komtDeInspecteur()) {
+			int welkeAttractie = 0;
+			for (Attractie attractie : attracties) {
+				if (attractie instanceof GokAttractie) {
+					this.belastingInnen(welkeAttractie, attractie.naam);
+				}
+				welkeAttractie++;
+			}
+			kassa.setAantalBelastingBezoeken(kassa.getAantalBelastingBezoeken() + 1);
+
 		}
 	}
 
@@ -132,7 +125,6 @@ class Kermis {
 	}
 
 	void onderhoud() {
-
 		for (Attractie attractie : attracties) {
 			if (attractie instanceof RisicoRijkeAttracties) {
 				RisicoRijkeAttracties risicoAttractie = (RisicoRijkeAttracties) attractie;

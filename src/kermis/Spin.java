@@ -26,7 +26,6 @@ class Spin extends RisicoRijkeAttracties implements GokAttractie {
 		this.omzet += this.prijs;
 		this.kaartjes++;
 		System.out.println("De atrractie " + this.naam + " draait.");
-		
 		return this.prijs;
 	}
 

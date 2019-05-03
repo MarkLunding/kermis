@@ -6,37 +6,32 @@ import java.util.Scanner;
 class Kermis {
 	ArrayList<Attractie> attracties = new ArrayList<>();
 	Kassa kassa = new Kassa();
+	boolean stopBezoek = false;
+	int inspectieTeller = 0;
+	int welkeAttractie;
 
 	Kermis() {
-		System.out.println("Welkom op de kermis.");
-		System.out.println();
 		this.attracties.add(new Botsauto());
 		this.attracties.add(new Spin());
 		this.attracties.add(new Spiegelpaleis());
 		this.attracties.add(new Spookhuis());
 		this.attracties.add(new Hawaii());
 		this.attracties.add(new Ladderklimmen());
-		System.out.println();
-		initKermis();
-
 	}
 
 	void bezoekKermis() {
-		boolean bezoekKermis = true;
 		belastingInspecteur inspecteur = new belastingInspecteur();
 		boolean[] inspectieMoment = inspecteur.bepaalBezoekMoment();
-		int inspectieTeller = 0;
-		while (bezoekKermis) {
-			int bezoekAttractie;
+		while (!stopBezoek) {
 			try {
-				bezoekAttractie = this.startKermis();
+				welkeAttractie = this.watGaanWeDoen();
 			} catch (Exception e) {
 				System.out.println("De ingevoerde waarde is ongeldig.");
 				continue;
 			}
-			switch (bezoekAttractie) {
+			switch (welkeAttractie) {
 			case 0:
-				bezoekKermis = false;
+				stopBezoek = true;
 				break;
 			case 1:
 			case 2:
@@ -46,17 +41,19 @@ class Kermis {
 			case 6:
 				// draai de attractie en controleer of onderhoud exceptie optreedt
 				try {
-					kassa.setOmzet(kassa.getOmzet() + attracties.get(bezoekAttractie - 1).draaien());
+					kassa.setOmzet(kassa.getOmzet() + attracties.get(welkeAttractie - 1).draaien());
 				} catch (Exception e) {
 					System.out.println(
 							"Deze attractie heeft onderhoud nodig. Dit moet de bediener activeren met de optie m");
 					continue;
 				}
-				this.verhoogKaartjes();
-				this.reserveerKansspelBelasting(bezoekAttractie);
+				verhoogKaartjes();
+				reserveerKansspelBelasting(welkeAttractie);
 
 				// kansspelbelasting betalen indien het moment er is (inspectitemoment)
 				// maar natuurlijk alleen voor de attracties die als gokken bekend zijn.
+				
+				
 				if (inspectieMoment[inspectieTeller]) {
 					int welkeAttractie = 0;
 					for (Attractie attractie : attracties) {
@@ -76,20 +73,25 @@ class Kermis {
 				}
 				break;
 			case 20: // 20 is de waarde van k
-				this.printKaartjeInfo();
+				printKaartjeInfo();
 				break;
 			case 22: // 22 is de waarde van m
-				this.onderhoud();
+				onderhoud();
 				break;
 			case 24: // 24 is de waarde van o
-				this.printOmzetInfo();
+				printOmzetInfo();
 				break;
 
 			}
 		}
 	}
 
-	void initKermis() {
+	void initieer() {
+		System.out.println("Welkom op de kermis.");
+		System.out.println();
+	}
+	
+	void attractieVraag() {
 		System.out.println("In welke attractie wilt u?");
 		System.out.println();
 		System.out.print("1: Botsauto's | 2: Spin | 3: Spiegelpaleis | 4: Spookhuis | 5: Hawaii | 6: Ladderklimmen");
@@ -97,7 +99,8 @@ class Kermis {
 		System.out.println("0: Stoppen | o: omzet | k: kaartjes | m: monteur");
 	}
 
-	int startKermis() throws Exception {
+	int watGaanWeDoen() throws Exception {
+		attractieVraag();
 		Scanner sc = new Scanner(System.in);
 		String attractieInvoer = sc.nextLine();
 		int eersteLetter = Character.getNumericValue(attractieInvoer.charAt(0));

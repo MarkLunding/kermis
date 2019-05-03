@@ -3,6 +3,8 @@ package kermis;
 import java.util.Random;
 
 class belastingInspecteur {
+	private int inspectieTeller = 0;
+	
 
 	boolean []bepaalBezoekMoment() {
 		Random random = new Random();

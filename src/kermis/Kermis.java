@@ -52,8 +52,7 @@ class Kermis {
 
 				// kansspelbelasting betalen indien het moment er is (inspectitemoment)
 				// maar natuurlijk alleen voor de attracties die als gokken bekend zijn.
-				
-				
+
 				if (inspectieMoment[inspectieTeller]) {
 					int welkeAttractie = 0;
 					for (Attractie attractie : attracties) {
@@ -79,7 +78,10 @@ class Kermis {
 				onderhoud();
 				break;
 			case 24: // 24 is de waarde van o
-				printOmzetInfo();
+				kassa.printKassaOmzetInfo();
+				for (Attractie attractie : attracties) {
+					attractie.printAttractieOmzetInfo();
+				}
 				break;
 
 			}
@@ -90,7 +92,7 @@ class Kermis {
 		System.out.println("Welkom op de kermis.");
 		System.out.println();
 	}
-	
+
 	void attractieVraag() {
 		System.out.println("In welke attractie wilt u?");
 		System.out.println();
@@ -144,7 +146,7 @@ class Kermis {
 
 		for (Attractie attractie : attracties) {
 			if (attractie instanceof RisicoRijkeAttracties) {
-				RisicoRijkeAttracties risicoAttractie = (RisicoRijkeAttracties)attractie;
+				RisicoRijkeAttracties risicoAttractie = (RisicoRijkeAttracties) attractie;
 				if (risicoAttractie.isOnderhoudNodig()) {
 					risicoAttractie.onderhoudsKeuring();
 				}
@@ -152,15 +154,6 @@ class Kermis {
 		}
 	}
 
-	void printOmzetInfo() {
-		System.out.println("De totale kermis omzet is: " + kassa.getOmzet());
-		System.out.println("===============");
-		for (Attractie attractie : attracties) {
-			System.out.println("Omzet van: " + attractie.naam + " is:" + attractie.omzet);
-		}
-		System.out.println();
-		System.out.println("Totaal betaalde kansspelbelasting: " + kassa.getTotaalAfgedragenBelasting());
-		System.out.println("Totaal aantal bezoeken van inspecteur: " + kassa.getAantalBelastingBezoeken());
-	}
+
 
 }
